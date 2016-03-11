@@ -12,8 +12,8 @@ my_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 sbt assembly
 
-jar_file=$(echo $my_dir/target/scala-2.11/capi-most-viewed-video-uploader*.jar)
+jar_file=$(echo $my_dir/target/scala-2.11/most-viewed-video-uploader*.jar)
 
 aws lambda update-function-code \
-  --function-name capi-most-viewed-video-uploader-$STAGE \
+  --function-name most-viewed-video-uploader-$STAGE \
   --zip-file fileb://$jar_file

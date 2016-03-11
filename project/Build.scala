@@ -11,7 +11,7 @@ object MostViewedVideoUploaderBuild extends Build {
     scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
   )
 
-  val root = Project("capi-most-viewed-video-uploader", file("."))
+  val root = Project("most-viewed-video-uploader", file("."))
     .settings(
 
       libraryDependencies ++= Seq(
