@@ -11,7 +11,7 @@ class ExtractMostViewedVideoTest extends FlatSpec with Matchers {
   it should "extract overall most-viewed videos" in {
     val json = loadFileFromClasspath("most-viewed-video-overall.json")
     val expected = List(MostViewedVideoContainer(
-      id = "us/overall",
+      id = "us",
       videos = List(
         MostViewedVideo(id = "gu-video-56ed4a37e4b0304172354aab", count = 126),
         MostViewedVideo(id = "gu-video-56ed24c4e4b0d5bc16af57dd", count = 61)

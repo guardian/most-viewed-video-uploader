@@ -1,51 +1,35 @@
 package com.gu.contentapi.mostviewedvideo
 
-import java.io.IOException
-
 import cats.data.Xor
 import cats.data.Xor._
 import com.gu.contentapi.Config
 import com.gu.contentapi.services.Http
 import com.gu.contentapi.mostviewedvideo.model.v1.{ MostViewedVideo => MostViewedVideoThrift, MostViewedVideoContainer => MostViewedVideoContainerThrift }
 import com.gu.contentapi.models.{ MostViewedVideo => MostViewedVideoModel, MostViewedVideoContainer => MostViewedVideoContainerModel }
-import com.squareup.okhttp.{ Response, Callback, Request }
+import com.squareup.okhttp.Request
 import io.circe.parser._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ Promise, Future }
 
 trait OphanStore extends Http {
   import OphanStore._
 
-  protected def getMostViewedVideoOverall(edition: Option[String], config: Config): Future[Xor[CustomError, List[MostViewedVideoContainerThrift]]] = {
+  protected def getMostViewedVideoOverall(edition: Option[String], config: Config): Xor[CustomError, List[MostViewedVideoContainerThrift]] = {
     val url = s"${config.ophanHost}/api/video/mostviewed?${buildCountryQuery(edition)}apiKey=${config.ophanKey}"
-    requestMostViewed(url, edition, config) map { json =>
-      json.flatMap(extractMostViewedVideoOverall(_, edition))
-    }
+    requestMostViewed(url, edition, config) flatMap (extractMostViewedVideoOverall(_, edition))
   }
 
-  protected def getMostViewedVideoBySection(edition: Option[String], config: Config): Future[Xor[CustomError, List[MostViewedVideoContainerThrift]]] = {
+  protected def getMostViewedVideoBySection(edition: Option[String], config: Config): Xor[CustomError, List[MostViewedVideoContainerThrift]] = {
     val url = s"${config.ophanHost}/api/video/mostviewed/sections?${buildCountryQuery(edition)}apiKey=${config.ophanKey}"
-    requestMostViewed(url, edition, config) map { json =>
-      json.flatMap(extractMostViewedVideoBySection(_, edition))
-    }
+    requestMostViewed(url, edition, config) flatMap (extractMostViewedVideoBySection(_, edition))
   }
 
-  private[this] def requestMostViewed(url: String, edition: Option[String], config: Config): Future[Xor[CustomError, String]] = {
+  private[this] def requestMostViewed(url: String, edition: Option[String], config: Config): Xor[CustomError, String] = {
     val request = new Request.Builder().url(url).build
-    val promise = Promise[Xor[CustomError, String]]()
 
-    httpClient.newCall(request).enqueue(new Callback {
-      override def onFailure(request: Request, e: IOException): Unit =
-        promise.success(left(CustomError(s"Failed to send request to Ophan for $url: ${e.getStackTrace}")))
-
-      override def onResponse(response: Response) = {
-        if (response.isSuccessful) promise.success(right(response.body.string))
-        else promise.success(left(CustomError(s"Bad response from Ophan for $url: ${response.code}")))
-      }
-    })
-
-    promise.future
+    val response = httpClient.newCall(request).execute
+    if (response.isSuccessful())
+      right(response.body.string)
+    else
+      left(CustomError(s"Failed to send request to Ophan for $url, response was ${response.code}"))
   }
 
   private[this] def buildCountryQuery(edition: Option[String]) = {
@@ -78,7 +62,13 @@ object OphanStore {
     import io.circe.generic.auto._
     decode[List[MostViewedVideoModel]](json).fold(
       { error => left(CustomError(error.getMessage)) },
-      { overallVideos => right(List(MostViewedVideoContainerModel(buildId(edition, section = "overall"), overallVideos))) }
+      { overallVideos =>
+        val section = edition match {
+          case None => Some("overall")
+          case Some(_) => None
+        }
+        right(List(MostViewedVideoContainerModel(buildId(edition, section), overallVideos)))
+      }
     )
   }
   private[this] def decodeSectionsJson(json: String, edition: Option[String]): Xor[CustomError, List[MostViewedVideoContainerModel]] = {
@@ -90,7 +80,7 @@ object OphanStore {
           val containers = sections map { sectionData =>
             val sectionId = sectionData._1
             val videos = sectionData._2
-            MostViewedVideoContainerModel(buildId(edition, sectionId), videos)
+            MostViewedVideoContainerModel(buildId(edition, Some(sectionId)), videos)
           }
           right(containers.toList)
         }
@@ -107,8 +97,8 @@ object OphanStore {
     )
   }
 
-  private[this] def buildId(edition: Option[String], section: String): String = {
-    Seq(edition, Some(section)).flatten.mkString("/")
+  private[this] def buildId(edition: Option[String], section: Option[String]): String = {
+    Seq(edition, section).flatten.mkString("/")
   }
 
 }

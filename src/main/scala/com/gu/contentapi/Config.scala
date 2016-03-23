@@ -2,7 +2,6 @@ package com.gu.contentapi
 
 import java.util.Properties
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.s3.AmazonS3Client
 

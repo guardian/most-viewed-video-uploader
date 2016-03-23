@@ -2,12 +2,13 @@ package com.gu.contentapi
 
 import java.util.{ Map => JMap }
 import cats.data.Xor
-import cats.data.Xor._
 import com.amazonaws.services.lambda.runtime.{ RequestHandler, Context }
 import com.gu.contentapi.mostviewedvideo.model.v1._
 import com.gu.contentapi.mostviewedvideo.{ CustomError, OphanStore }
 import com.gu.contentapi.services.{ Kinesis, ContentApi }
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 class Lambda
     extends RequestHandler[JMap[String, Object], Unit]
@@ -19,32 +20,29 @@ class Lambda
 
     val capi = new ContentApi(config.capiUrl, config.capiKey)
 
-    def onOphanResponse(mostViewedContainers: Xor[CustomError, List[MostViewedVideoContainer]]): Unit = {
-      mostViewedContainers match {
-        case Left(error) => println(error.toString)
-        case Right(containers) => containers.foreach(publish(_, config) map onKinesisResponse)
+    def upload(mostViewedVideoContainers: Xor[CustomError, List[MostViewedVideoContainer]]): Unit = {
+      val result = mostViewedVideoContainers map { containers =>
+        val pubResults = containers map (publish(_, config))
+        pubResults.flatMap(_.swap.toOption)
       }
-    }
-    def onKinesisResponse(kinesisResponse: Xor[CustomError, String]): Unit = {
-      println(kinesisResponse.fold(
-        { error => error.toString },
-        { id => s"Successfully sent most-viewed videos for $id" }
+
+      println(result.fold(
+        { ophanError => ophanError.toString },
+        { kinesisErrors => kinesisErrors.mkString("\n") }
       ))
     }
 
-    val futureEditionIds = capi.getResponse(capi.editions).map(_.results.map(_.id))
-    for {
-      editionIds <- futureEditionIds
-    } yield {
+    val editionIds = Await.result(capi.getResponse(capi.editions).map(_.results.map(_.id)), 5.seconds)
 
-      editionIds map { editionId =>
+    editionIds foreach { editionId =>
 
-        getMostViewedVideoBySection(Some(editionId), config) map onOphanResponse
+      upload(getMostViewedVideoBySection(Some(editionId), config))
 
-        getMostViewedVideoOverall(Some(editionId), config) map onOphanResponse
-      }
+      upload(getMostViewedVideoOverall(Some(editionId), config))
     }
 
-    getMostViewedVideoBySection(None, config) map onOphanResponse
+    upload(getMostViewedVideoBySection(None, config))
+
+    upload(getMostViewedVideoOverall(None, config))
   }
 }
