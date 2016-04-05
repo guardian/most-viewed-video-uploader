@@ -1,5 +1,4 @@
 package com.gu.contentapi.models
 
-
-case class MostViewedVideo(id: String, count: Int, paths: List[String])
-case class MostViewedVideoContainer(id: String, content: List[MostViewedVideo])
+case class MostViewedVideo(id: String, count: Int)
+case class MostViewedVideoContainer(id: String, videos: List[MostViewedVideo])
