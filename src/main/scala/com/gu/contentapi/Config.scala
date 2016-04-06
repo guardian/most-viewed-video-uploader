@@ -19,6 +19,7 @@ class Config(val context: Context) {
 
   val ophanHost = getConfigItem("ophan.host")
   val ophanKey = getConfigItem("ophan.key")
+  val ophanMinutes = getConfigItem("ophan.minutes")
 
   val kinesisName = getConfigItem("kinesis.name")
 

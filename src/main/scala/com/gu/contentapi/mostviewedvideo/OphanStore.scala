@@ -13,12 +13,12 @@ trait OphanStore extends Http {
   import OphanStore._
 
   protected def getMostViewedVideoOverall(edition: Option[String], config: Config): Xor[CustomError, List[MostViewedVideoContainerThrift]] = {
-    val url = s"${config.ophanHost}/api/video/mostviewed?${buildCountryQuery(edition)}apiKey=${config.ophanKey}"
+    val url = buildUrl("/api/video/mostviewed", edition, config)
     requestMostViewed(url, edition, config) flatMap (extractMostViewedVideoOverall(_, edition))
   }
 
   protected def getMostViewedVideoBySection(edition: Option[String], config: Config): Xor[CustomError, List[MostViewedVideoContainerThrift]] = {
-    val url = s"${config.ophanHost}/api/video/mostviewed/sections?${buildCountryQuery(edition)}apiKey=${config.ophanKey}"
+    val url = buildUrl("/api/video/mostviewed/sections", edition, config)
     requestMostViewed(url, edition, config) flatMap (extractMostViewedVideoBySection(_, edition))
   }
 
@@ -31,6 +31,9 @@ trait OphanStore extends Http {
     else
       left(CustomError(s"Failed to send request to Ophan for $url, response was ${response.code}"))
   }
+
+  private[this] def buildUrl(path: String, edition: Option[String], config: Config) =
+    s"${config.ophanHost}$path?${buildCountryQuery(edition)}mins=${config.ophanMinutes}&apiKey=${config.ophanKey}"
 
   private[this] def buildCountryQuery(edition: Option[String]) = {
     edition match {
