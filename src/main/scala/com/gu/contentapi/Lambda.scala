@@ -10,9 +10,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 class Lambda
-    extends RequestHandler[JMap[String, Object], Unit]
-    with Kinesis
-    with OphanStore {
+  extends RequestHandler[JMap[String, Object], Unit]
+  with Kinesis
+  with OphanStore {
 
   override def handleRequest(event: JMap[String, Object], context: Context): Unit = {
     val config = new Config(context)
