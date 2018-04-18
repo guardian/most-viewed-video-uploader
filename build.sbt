@@ -7,9 +7,9 @@ val root = Project("most-viewed-video-uploader", file("."))
   .settings(
     scalacOptions += "-deprecation",
     libraryDependencies ++= Seq(
-      "com.amazonaws" % "aws-lambda-java-core" % "1.1.0",
-      "com.amazonaws" % "aws-java-sdk-s3" % "1.10.39",
-      "com.amazonaws" % "aws-java-sdk-kinesis" % "1.10.39",
+      "com.amazonaws" % "aws-lambda-java-core" % "1.2.0",
+      "com.amazonaws" % "aws-java-sdk-s3" % "1.11.313",
+      "com.amazonaws" % "aws-java-sdk-kinesis" % "1.11.313",
       "com.squareup.okhttp3" % "okhttp" % "3.10.0",
       "com.gu" %% "content-api-client-default" % "12.0",
       "io.circe" %% "circe-generic" % "0.9.3",
