@@ -1,7 +1,5 @@
 package com.gu.contentapi.mostviewedvideo
 
-import cats.data.Xor
-import cats.data.Xor._
 import com.gu.contentapi.Config
 import com.gu.contentapi.services.Http
 import com.gu.contentapi.mostviewedvideo.model.v1.{ MostViewedVideo => MostViewedVideoThrift, MostViewedVideoContainer => MostViewedVideoContainerThrift }
@@ -12,17 +10,17 @@ import io.circe.parser._
 trait OphanStore extends Http {
   import OphanStore._
 
-  protected def getMostViewedVideoOverall(edition: Option[String], config: Config): Xor[CustomError, List[MostViewedVideoContainerThrift]] = {
+  protected def getMostViewedVideoOverall(edition: Option[String], config: Config): Either[CustomError, List[MostViewedVideoContainerThrift]] = {
     val url = buildUrl("/api/video/mostviewed", edition, config)
     requestMostViewed(url, edition, config) flatMap (extractMostViewedVideoOverall(_, edition))
   }
 
-  protected def getMostViewedVideoBySection(edition: Option[String], config: Config): Xor[CustomError, List[MostViewedVideoContainerThrift]] = {
+  protected def getMostViewedVideoBySection(edition: Option[String], config: Config): Either[CustomError, List[MostViewedVideoContainerThrift]] = {
     val url = buildUrl("/api/video/mostviewed/sections", edition, config)
     requestMostViewed(url, edition, config) flatMap (extractMostViewedVideoBySection(_, edition))
   }
 
-  private[this] def requestMostViewed(url: String, edition: Option[String], config: Config): Xor[CustomError, String] = {
+  private[this] def requestMostViewed(url: String, edition: Option[String], config: Config): Either[CustomError, String] = {
     val request = new Request.Builder().url(url).build
 
     val response = httpClient.newCall(request).execute
@@ -51,17 +49,17 @@ trait OphanStore extends Http {
 
 object OphanStore {
 
-  def extractMostViewedVideoOverall(json: String, edition: Option[String]): Xor[CustomError, List[MostViewedVideoContainerThrift]] =
+  def extractMostViewedVideoOverall(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerThrift]] =
     decodeOverallJson(json, edition) flatMap (containers => right(containers map mostViewedVideoContainerToThrift))
 
-  def extractMostViewedVideoBySection(json: String, edition: Option[String]): Xor[CustomError, List[MostViewedVideoContainerThrift]] =
+  def extractMostViewedVideoBySection(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerThrift]] =
     decodeSectionsJson(json, edition) flatMap (containers => right(containers map mostViewedVideoContainerToThrift))
 
   /**
    * Unfortunately, circe cannot easily decode a json string to a thrift object (https://github.com/travisbrown/circe/issues/208).
    * The simplest solution is to decode to intermediary case classes, then construct the thrift objects from these.
    */
-  private[this] def decodeOverallJson(json: String, edition: Option[String]): Xor[CustomError, List[MostViewedVideoContainerModel]] = {
+  private[this] def decodeOverallJson(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerModel]] = {
     import io.circe.generic.auto._
     decode[List[MostViewedVideoModel]](json).fold(
       { error => left(CustomError(error.getMessage)) },
@@ -71,10 +69,9 @@ object OphanStore {
           case Some(_) => None
         }
         right(List(MostViewedVideoContainerModel(buildId(edition, section), overallVideos)))
-      }
-    )
+      })
   }
-  private[this] def decodeSectionsJson(json: String, edition: Option[String]): Xor[CustomError, List[MostViewedVideoContainerModel]] = {
+  private[this] def decodeSectionsJson(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerModel]] = {
     import io.circe.generic.auto._
     decode[Map[String, List[MostViewedVideoModel]]](json).fold(
       { error => left(CustomError(error.getMessage)) },
@@ -87,8 +84,7 @@ object OphanStore {
           }
           right(containers.toList)
         }
-      }
-    )
+      })
   }
   private[this] def mostViewedVideoToThrift(mostViewedVideo: MostViewedVideoModel): MostViewedVideoThrift =
     MostViewedVideoThrift(id = mostViewedVideo.id, count = mostViewedVideo.count)
@@ -96,8 +92,7 @@ object OphanStore {
   private[this] def mostViewedVideoContainerToThrift(mostViewedVideoContainer: MostViewedVideoContainerModel): MostViewedVideoContainerThrift = {
     MostViewedVideoContainerThrift(
       id = mostViewedVideoContainer.id,
-      videos = mostViewedVideoContainer.videos.map(mostViewedVideoToThrift)
-    )
+      videos = mostViewedVideoContainer.videos.map(mostViewedVideoToThrift))
   }
 
   private[this] def buildId(edition: Option[String], section: Option[String]): String = {

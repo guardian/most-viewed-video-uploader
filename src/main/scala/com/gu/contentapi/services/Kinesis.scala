@@ -2,8 +2,6 @@ package com.gu.contentapi.services
 
 import java.nio.ByteBuffer
 
-import cats.data.Xor
-import cats.data.Xor._
 import com.amazonaws.regions.{ Region, Regions }
 import com.amazonaws.services.kinesis.AmazonKinesisAsyncClient
 import com.amazonaws.services.kinesis.model.{ PutRecordsResult, PutRecordsRequestEntry, PutRecordsRequest }
@@ -21,7 +19,7 @@ trait Kinesis extends ThriftSerializer {
 
   }
 
-  def publish(data: MostViewedVideoContainer, config: Config): Xor[CustomError, String] = {
+  def publish(data: MostViewedVideoContainer, config: Config): Either[CustomError, String] = {
 
     val record = new PutRecordsRequestEntry()
       .withPartitionKey(data.id)

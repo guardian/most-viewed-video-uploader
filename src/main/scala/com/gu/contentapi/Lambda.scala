@@ -1,7 +1,6 @@
 package com.gu.contentapi
 
 import java.util.{ Map => JMap }
-import cats.data.Xor
 import com.amazonaws.services.lambda.runtime.{ RequestHandler, Context }
 import com.gu.contentapi.mostviewedvideo.model.v1._
 import com.gu.contentapi.mostviewedvideo.{ CustomError, OphanStore }
@@ -20,7 +19,7 @@ class Lambda
 
     val capi = new ContentApi(config.capiUrl, config.capiKey)
 
-    def upload(mostViewedVideoContainers: Xor[CustomError, List[MostViewedVideoContainer]]): Unit = {
+    def upload(mostViewedVideoContainers: Either[CustomError, List[MostViewedVideoContainer]]): Unit = {
       val result = mostViewedVideoContainers map { containers =>
         val pubResults = containers map (publish(_, config))
         pubResults.flatMap(_.swap.toOption)
@@ -28,8 +27,7 @@ class Lambda
 
       println(result.fold(
         { ophanError => ophanError.toString },
-        { kinesisErrors => kinesisErrors.mkString("\n") }
-      ))
+        { kinesisErrors => kinesisErrors.mkString("\n") }))
     }
 
     val editionIds = Await.result(capi.getResponse(capi.editions).map(_.results.map(_.id)), 5.seconds)
