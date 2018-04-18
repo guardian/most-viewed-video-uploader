@@ -25,9 +25,9 @@ trait OphanStore extends Http {
 
     val response = httpClient.newCall(request).execute
     if (response.isSuccessful())
-      right(response.body.string)
+      Right(response.body.string)
     else
-      left(CustomError(s"Failed to send request to Ophan for $url, response was ${response.code}"))
+      Left(CustomError(s"Failed to send request to Ophan for $url, response was ${response.code}"))
   }
 
   private[this] def buildUrl(path: String, edition: Option[String], config: Config) =
@@ -50,10 +50,10 @@ trait OphanStore extends Http {
 object OphanStore {
 
   def extractMostViewedVideoOverall(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerThrift]] =
-    decodeOverallJson(json, edition) flatMap (containers => right(containers map mostViewedVideoContainerToThrift))
+    decodeOverallJson(json, edition) flatMap (containers => Right(containers map mostViewedVideoContainerToThrift))
 
   def extractMostViewedVideoBySection(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerThrift]] =
-    decodeSectionsJson(json, edition) flatMap (containers => right(containers map mostViewedVideoContainerToThrift))
+    decodeSectionsJson(json, edition) flatMap (containers => Right(containers map mostViewedVideoContainerToThrift))
 
   /**
    * Unfortunately, circe cannot easily decode a json string to a thrift object (https://github.com/travisbrown/circe/issues/208).
@@ -62,19 +62,19 @@ object OphanStore {
   private[this] def decodeOverallJson(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerModel]] = {
     import io.circe.generic.auto._
     decode[List[MostViewedVideoModel]](json).fold(
-      { error => left(CustomError(error.getMessage)) },
+      { error => Left(CustomError(error.getMessage)) },
       { overallVideos =>
         val section = edition match {
           case None => Some("overall")
           case Some(_) => None
         }
-        right(List(MostViewedVideoContainerModel(buildId(edition, section), overallVideos)))
+        Right(List(MostViewedVideoContainerModel(buildId(edition, section), overallVideos)))
       })
   }
   private[this] def decodeSectionsJson(json: String, edition: Option[String]): Either[CustomError, List[MostViewedVideoContainerModel]] = {
     import io.circe.generic.auto._
     decode[Map[String, List[MostViewedVideoModel]]](json).fold(
-      { error => left(CustomError(error.getMessage)) },
+      { error => Left(CustomError(error.getMessage)) },
       { sections =>
         {
           val containers = sections map { sectionData =>
@@ -82,7 +82,7 @@ object OphanStore {
             val videos = sectionData._2
             MostViewedVideoContainerModel(buildId(edition, Some(sectionId)), videos)
           }
-          right(containers.toList)
+          Right(containers.toList)
         }
       })
   }

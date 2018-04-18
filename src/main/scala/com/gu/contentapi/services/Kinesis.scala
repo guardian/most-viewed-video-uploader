@@ -31,9 +31,9 @@ trait Kinesis {
 
     val putRecordsResult: PutRecordsResult = kinesisClient.putRecords(request)
     if (putRecordsResult.getFailedRecordCount > 0)
-      left(CustomError(s"Failed to publish most-viewed videos for: ${data.id}."))
+      Left(CustomError(s"Failed to publish most-viewed videos for: ${data.id}."))
     else
-      right(data.id)
+      Right(data.id)
   }
 
 }
