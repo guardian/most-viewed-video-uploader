@@ -14,9 +14,7 @@ class ExtractMostViewedVideoTest extends FlatSpec with Matchers {
       id = "us",
       videos = List(
         MostViewedVideo(id = "gu-video-56ed4a37e4b0304172354aab", count = 126),
-        MostViewedVideo(id = "gu-video-56ed24c4e4b0d5bc16af57dd", count = 61)
-      )
-    ))
+        MostViewedVideo(id = "gu-video-56ed24c4e4b0d5bc16af57dd", count = 61))))
     val overall = OphanStore.extractMostViewedVideoOverall(json, Some("us")).toOption
     overall should be(Some(expected))
   }
@@ -26,13 +24,10 @@ class ExtractMostViewedVideoTest extends FlatSpec with Matchers {
     val expected = List(
       MostViewedVideoContainer(id = "world", videos = List(
         MostViewedVideo("gu-video-56e99589e4b06837afd3e2d7", 686),
-        MostViewedVideo("gu-video-56eb7663e4b0a5327f1d183e", 308))
-      ),
+        MostViewedVideo("gu-video-56eb7663e4b0a5327f1d183e", 308))),
       MostViewedVideoContainer(id = "us-news", videos = List(
         MostViewedVideo("gu-video-56ebbfcde4b0ba41c3b4a85e", 257),
-        MostViewedVideo("gu-video-56e976d1e4b06837afd3e260", 223)
-      ))
-    )
+        MostViewedVideo("gu-video-56e976d1e4b06837afd3e260", 223))))
     val sections = OphanStore.extractMostViewedVideoBySection(json, None).toOption
     sections should be(Some(expected))
   }
