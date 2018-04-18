@@ -8,9 +8,9 @@ import com.amazonaws.services.kinesis.model.{ PutRecordsResult, PutRecordsReques
 import com.gu.contentapi.Config
 import com.gu.contentapi.mostviewedvideo.model.v1._
 import com.gu.contentapi.mostviewedvideo.CustomError
-import com.gu.thrift.serializer.ThriftSerializer
+import com.gu.thrift.serializer._
 
-trait Kinesis extends ThriftSerializer {
+trait Kinesis {
 
   private lazy val kinesisClient: AmazonKinesisAsyncClient = {
     val kinesisClient = new AmazonKinesisAsyncClient()
@@ -23,7 +23,7 @@ trait Kinesis extends ThriftSerializer {
 
     val record = new PutRecordsRequestEntry()
       .withPartitionKey(data.id)
-      .withData(ByteBuffer.wrap(serializeToBytes(data)))
+      .withData(ByteBuffer.wrap(ThriftSerializer.serializeToBytes(data, Some(GzipType), None)))
 
     val request = new PutRecordsRequest()
       .withStreamName(config.kinesisName)
