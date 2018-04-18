@@ -4,7 +4,7 @@ import com.gu.contentapi.Config
 import com.gu.contentapi.services.Http
 import com.gu.contentapi.mostviewedvideo.model.v1.{ MostViewedVideo => MostViewedVideoThrift, MostViewedVideoContainer => MostViewedVideoContainerThrift }
 import com.gu.contentapi.models.{ MostViewedVideo => MostViewedVideoModel, MostViewedVideoContainer => MostViewedVideoContainerModel }
-import com.squareup.okhttp.Request
+import okhttp3.Request
 import io.circe.parser._
 
 trait OphanStore extends Http {
