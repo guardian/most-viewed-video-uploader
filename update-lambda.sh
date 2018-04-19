@@ -16,4 +16,6 @@ jar_file=$(echo $my_dir/target/scala-2.12/most-viewed-video-uploader*.jar)
 
 aws lambda update-function-code \
   --function-name most-viewed-video-uploader-$STAGE \
+  --region eu-west-1 \
+  --profile capi \
   --zip-file fileb://$jar_file
