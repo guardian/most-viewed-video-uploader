@@ -9,7 +9,7 @@ jobs:
     with:
       DEBUG: true
       ORG: guardian-test
-      SKIP_NODE: $SKIP_NODE
+      SKIP_NODE: true
       JAVA_VERSION: 8
     secrets:
        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
