@@ -31,7 +31,7 @@ trait OphanStore extends Http {
   }
 
   private[this] def buildUrl(path: String, edition: Option[String], config: Config) =
-    s"${config.ophanHost}$path?${buildCountryQuery(edition)}mins=${config.ophanMinutes}&apiKey=${config.ophanKey}"
+    s"${config.ophanHost}$path?${buildCountryQuery(edition)}mins=${config.ophanMinutes}&api-key=${config.ophanKey}"
 
   private[this] def buildCountryQuery(edition: Option[String]) = {
     edition match {
