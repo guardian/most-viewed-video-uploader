@@ -24,6 +24,9 @@ val root = Project("most-viewed-video-uploader", file("."))
     assembly / assemblyMergeStrategy   := {
       case PathList("com", "gu", "storypackage", _*) => MergeStrategy.first
       case "shared.thrift"                           => MergeStrategy.first
+      case "module-info.class" => MergeStrategy.first
+      case PathList("META-INF", "versions", "9", "module-info.class") => MergeStrategy.first
+      case "BUILD" => MergeStrategy.first
       case x => 
         val oldStrategy = (assembly / assemblyMergeStrategy).value
         oldStrategy(x)
