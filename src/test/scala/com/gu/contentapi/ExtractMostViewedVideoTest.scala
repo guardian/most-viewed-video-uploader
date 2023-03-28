@@ -2,10 +2,9 @@ import java.nio.file.{ Files, Paths }
 
 import com.gu.contentapi.mostviewedvideo.model.v1._
 import com.gu.contentapi.mostviewedvideo.OphanStore
-import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.{ Matchers, FlatSpec }
 
-class ExtractMostViewedVideoTest extends AnyFlatSpec with Matchers {
+class ExtractMostViewedVideoTest extends FlatSpec with Matchers {
 
   behavior of "most-viewed video extraction"
 
