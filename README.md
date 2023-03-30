@@ -25,6 +25,10 @@ which, if successful, and after a brief delay after packaging, will output somet
     .
 }
 ```
+## Temporarily
+
+After some major dependency bumps, the .jar file is too big for the `update-lambda` script to upload and therefore it needs to be manually uploaded to S3 and then picked up by lambda. 
+
 
 At this point just confirm that all is well by checking the last updated details of the function in the AWS console
 and keep an eye on logs for signs of problems. You can also query the ophan logs for evidence of the requests this
