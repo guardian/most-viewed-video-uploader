@@ -3,5 +3,5 @@
 
 target/
 logs/
-
+junit/
 !.github
