@@ -49,7 +49,7 @@ exports[`The MostViewedVideoUploader stack matches the snapshot 1`] = `
             "STAGE": "TEST",
           },
         },
-        "FunctionName": "most-viewed-video-uploader-TEST",
+        "FunctionName": "most-viewed-video-uploader-v2-TEST",
         "Handler": "com.gu.contentapi.Lambda::handleRequest",
         "MemorySize": 512,
         "Role": {

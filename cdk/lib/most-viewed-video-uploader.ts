@@ -19,7 +19,7 @@ export class MostViewedVideoUploader extends GuStack {
       architecture: Architecture.ARM_64,
       description: "Most-viewed video uploader",
       fileName: "most-viewed-video-uploader.jar",
-      functionName: `most-viewed-video-uploader-${this.stage}`,
+      functionName: `most-viewed-video-uploader-v2-${this.stage}`,
       handler: "com.gu.contentapi.Lambda::handleRequest",
       memorySize: 512,
       monitoringConfiguration: {
