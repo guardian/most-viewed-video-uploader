@@ -21,7 +21,6 @@ export class MostViewedVideoUploader extends GuStack {
       fileName: "most-viewed-video-uploader.jar",
       functionName: `most-viewed-video-uploader-${this.stage}`,
       handler: "com.gu.contentapi.Lambda::handleRequest",
-      logRetention: RetentionDays.ONE_MONTH,
       memorySize: 512,
       monitoringConfiguration: {
         snsTopicName: urgentAlarmTopicArn.stringValue,
