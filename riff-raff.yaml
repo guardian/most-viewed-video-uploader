@@ -1,0 +1,20 @@
+stacks: [content-api]
+regions: [eu-west-1]
+
+deployments:
+  most-viewed-video-uploader:
+    type: aws-lambda
+    parameters:
+      bucketSsmLookup: true
+      functionNames: [most-viewed-video-uploader-]
+      fileName: most-viewed-video-uploader.jar
+      prefixStack: false
+    dependencies:
+      - cloudformation
+  cloudformation:
+    type: cloud-formation
+    app: most-viewed-video-uploader
+    parameters:
+      templateStagePaths:
+        CODE: MostViewedVideoUploader-CODE.template.json
+        PROD: MostViewedVideoUploader-PROD.template.json
