@@ -197,7 +197,7 @@ exports[`The MostViewedVideoUploader stack matches the snapshot 1`] = `
           "S3Bucket": {
             "Ref": "DistributionBucketName",
           },
-          "S3Key": "content-api/TEST/most-viewed-video-uploader/most-viewed-video-uploader-assembly-0.1.0-SNAPSHOT.jar",
+          "S3Key": "content-api/TEST/most-viewed-video-uploader/most-viewed-video-uploader.jar",
         },
         "Description": "Most-viewed video uploader",
         "Environment": {
@@ -506,7 +506,7 @@ exports[`The MostViewedVideoUploader stack matches the snapshot 1`] = `
                       {
                         "Ref": "DistributionBucketName",
                       },
-                      "/content-api/TEST/most-viewed-video-uploader/most-viewed-video-uploader-assembly-0.1.0-SNAPSHOT.jar",
+                      "/content-api/TEST/most-viewed-video-uploader/most-viewed-video-uploader.jar",
                     ],
                   ],
                 },
