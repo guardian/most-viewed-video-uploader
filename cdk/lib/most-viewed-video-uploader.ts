@@ -5,7 +5,7 @@ import {aws_ssm, Duration} from "aws-cdk-lib";
 import {GuScheduledLambda} from "@guardian/cdk";
 import {Architecture, Runtime} from "aws-cdk-lib/aws-lambda";
 import {Schedule} from "aws-cdk-lib/aws-events";
-import {RetentionDays} from "aws-cdk-lib/aws-logs";
+import {Effect, PolicyStatement} from "aws-cdk-lib/aws-iam";
 
 export class MostViewedVideoUploader extends GuStack {
   constructor(scope: App, id: string, props: GuStackProps) {
@@ -27,6 +27,13 @@ export class MostViewedVideoUploader extends GuStack {
         toleratedErrorPercentage: 5,
         numberOfMinutesAboveThresholdBeforeAlarm: 1,
       },
+      initialPolicy: [
+         new PolicyStatement({
+           effect: Effect.ALLOW,
+           actions: ["s3:GetObject"],
+           resources: [`arn:aws:s3:::content-api-config/most-viewed-video-uploader/${this.stage}/*`],
+         })
+      ],
       rules: [
         {
           schedule: Schedule.rate(Duration.hours(1)),

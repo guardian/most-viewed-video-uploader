@@ -291,6 +291,11 @@ exports[`The MostViewedVideoUploader stack matches the snapshot 1`] = `
         "PolicyDocument": {
           "Statement": [
             {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::content-api-config/most-viewed-video-uploader/TEST/*",
+            },
+            {
               "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
