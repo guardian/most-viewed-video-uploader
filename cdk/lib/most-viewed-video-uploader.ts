@@ -32,7 +32,12 @@ export class MostViewedVideoUploader extends GuStack {
            effect: Effect.ALLOW,
            actions: ["s3:GetObject"],
            resources: [`arn:aws:s3:::content-api-config/most-viewed-video-uploader/${this.stage}/*`],
-         })
+         }),
+         new PolicyStatement({
+           effect: Effect.ALLOW,
+           actions: ["kinesis:PutRecords"],
+           resources: [`arn:aws:kinesis:${this.region}:${this.account}:stream/content-api-most-viewed-video-${this.stage}`]
+         }),
       ],
       rules: [
         {
