@@ -55,7 +55,7 @@ jobs:
 
       - name: Build and test
         env:
-          SBT_JUNIT_OUTPUT: ./junit-tests
+          SBT_JUNIT_OUTPUT: ./junit
           JAVA_OPTS: -Dsbt.log.noformat=true
         run: |
           sbt 'test;assembly'
