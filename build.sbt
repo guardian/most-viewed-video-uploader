@@ -16,7 +16,8 @@ val root = Project("most-viewed-video-uploader", file("."))
       "com.twitter" %% "scrooge-core" % "22.12.0",
       "com.gu" %% "thrift-serializer" % "4.0.2",
       "org.scalatest" %% "scalatest" % "3.2.15" % "test"
-    )
+    ),
+    assemblyJarName := "most-viewed-video-uploader.jar"
   )
   .settings(basicSettings)
   .settings(
@@ -36,7 +37,7 @@ val root = Project("most-viewed-video-uploader", file("."))
 dependencyOverrides ++=  Seq(
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.14.2"
 )
-
+Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.getOrElse("SBT_JUNIT_OUTPUT", "junit"))
 
 lazy val basicSettings = Seq(
   organization  := "com.gu",
