@@ -2,10 +2,10 @@ name: Build and upload
 
 on:
   push:
-    branches: [ "*" ]
+    branches: ["*"]
   pull_request:
-    branches: [ "main" ]
-  workflow_dispatch: { }
+    branches: ["main"]
+  workflow_dispatch: {}
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: cdk/package-lock.json
 
       - run: npm ci
@@ -66,6 +66,6 @@ jobs:
               - target/scala-2.13/most-viewed-video-uploader.jar
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()  #runs even if there is a test failure
+        if: always() #runs even if there is a test failure
         with:
           files: junit/*.xml
