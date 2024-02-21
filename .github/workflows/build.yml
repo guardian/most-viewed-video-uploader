@@ -46,23 +46,18 @@ jobs:
           java-version: 11
           cache: sbt
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: eu-west-1
-          role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
-          role-session-name: content-api-most-viewed-video-uploader-build
-
       - name: Build and test
         env:
           SBT_JUNIT_OUTPUT: ./junit
           JAVA_OPTS: -Dsbt.log.noformat=true
         run: |
           sbt 'test;assembly'
-      - uses: guardian/actions-riff-raff@v2
+      - uses: guardian/actions-riff-raff@v4
         with:
           configPath: riff-raff.yaml
           projectName: Content Platforms::Most Viewed Video Uploader
+          roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
           contentDirectories: |
             cloudformation:
               - cdk/cdk.out/MostViewedVideoUploader-PROD.template.json
