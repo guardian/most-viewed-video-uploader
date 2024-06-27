@@ -9,12 +9,12 @@ val root = Project("most-viewed-video-uploader", file("."))
       "com.amazonaws" % "aws-java-sdk-s3" % "1.12.641",
       "com.amazonaws" % "aws-java-sdk-kinesis" % "1.12.641",
       "com.squareup.okhttp3" % "okhttp" % "4.10.0",
-      "com.gu" %% "content-api-client-default" % "19.2.1",
+      "com.gu" %% "content-api-client-default" % "31.0.2",
       "io.circe" %% "circe-generic" % "0.14.5",
       "io.circe" %% "circe-parser" % "0.14.5",
       "org.apache.thrift" % "libthrift" % "0.18.1",
       "com.twitter" %% "scrooge-core" % "22.12.0",
-      "com.gu" %% "thrift-serializer" % "4.0.2",
+      "com.gu" %% "thrift-serializer" % "5.0.7",
       "org.scalatest" %% "scalatest" % "3.2.15" % "test"
     ),
     assemblyJarName := "most-viewed-video-uploader.jar"
