@@ -1,36 +1,16 @@
 ## Deploying
 
-This project isn't deployable by any of our usual routes at this time, so when your changes are merged into the main 
-branch, check that out locally.
+This project is built and uploaded via Github Actions and deployed using RiffRaff's continuous deployment configuration.
 
-You'll need some credentials loaded into your console under the capi profile. Get those from Janus.
+If you need to manually run or re-run a build you can run the `Build and upload` action. 
+If this is done on the `main` branch, RiffRaff should pick it up and deploy it.
 
-You'll find an `update-lambda.sh` script in the project's root directory. Running this will run the build in sbt and 
-upload the resulting .jar file to AWS.
+After merging main and the deploy going out, just confirm that all is well by checking the last updated details 
+of the function in the AWS console and keep an eye on logs for signs of problems. 
+You can also query the ophan logs for evidence of the requests this lambda makes e.g. search for ophan 
+logs with "/api/video/mostviewed" in the message, and for this application's ophan API key.
 
-For example, run
+Note that the run frequency is once per hour, so you may need to trigger a test run of the lambda after a deployment.
 
-`$ ./update-lambda.sh PROD`
+There is no CODE environment here. 
 
-which, if successful, and after a brief delay after packaging, will output something resembling
-
-```
-[info] Packaging /path/to/your/local/most-viewed-video-uploader/target/scala-2.12/most-viewed-video-uploader-assembly-0.1-SNAPSHOT.jar ...
-[info] Done packaging.
-[success] Total time: 12 s, completed 10-Oct-2022 16:32:41
-{
-    "FunctionName": "most-viewed-video-uploader-PROD",
-    .
-    .
-    .
-}
-```
-## Temporarily
-
-After some major dependency bumps, the .jar file is too big for the `update-lambda` script to upload and therefore it needs to be manually uploaded to S3 and then picked up by lambda. 
-
-
-At this point just confirm that all is well by checking the last updated details of the function in the AWS console
-and keep an eye on logs for signs of problems. You can also query the ophan logs for evidence of the requests this
-lambda makes e.g. search for ophan logs with "/api/video/mostviewed" in the message, and for this application's 
-ophan API key.

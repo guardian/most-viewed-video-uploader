@@ -65,7 +65,7 @@ jobs:
             most-viewed-video-uploader:
               - target/scala-2.13/most-viewed-video-uploader.jar
       - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always() #runs even if there is a test failure
         with:
           files: junit/*.xml
