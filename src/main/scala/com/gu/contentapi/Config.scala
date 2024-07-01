@@ -1,14 +1,13 @@
 package com.gu.contentapi
 
 import java.util.Properties
-
 import com.amazonaws.services.lambda.runtime.Context
-import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.{ AmazonS3, AmazonS3ClientBuilder }
 
 import scala.util.Try
 
 class Config(val context: Context) {
-  protected val s3Client: AmazonS3Client = new AmazonS3Client()
+  protected val s3Client: AmazonS3 = AmazonS3ClientBuilder.defaultClient()
 
   val isProd = Try(context.getFunctionName.toLowerCase.contains("-prod")).getOrElse(false)
   private val stage = if (isProd) "PROD" else "CODE"
