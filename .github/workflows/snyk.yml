@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - update-snyk-workflow-to-main
   workflow_dispatch:
 
 jobs:
