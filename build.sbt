@@ -43,7 +43,7 @@ val root = Project("most-viewed-video-uploader", file("."))
     }
   )
 
-Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.getOrElse("SBT_JUNIT_OUTPUT", "junit"))
+Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.getOrElse("SBT_JUNIT_OUTPUT", "junit"), "-o")
 
 lazy val basicSettings = Seq(
   organization  := "com.gu",
