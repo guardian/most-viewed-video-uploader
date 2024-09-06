@@ -6,7 +6,7 @@ val okHttpVersion = "4.12.0"
 val capiClientVersion = "31.0.3"
 val circeVersion = "0.14.5"
 val apacheThriftVersion = "0.20.0"
-val scroogeVersion = "22.12.0"
+val scroogeVersion = "24.2.0"
 val thriftSerializerVersion = "5.0.7"
 
 val root = Project("most-viewed-video-uploader", file("."))
