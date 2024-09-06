@@ -4,7 +4,7 @@ import Keys._
 val awsSdkVersion = "1.12.771"
 val okHttpVersion = "4.12.0"
 val capiClientVersion = "31.0.3"
-val circeVersion = "0.14.5"
+val circeVersion = "0.14.9"
 val apacheThriftVersion = "0.20.0"
 val scroogeVersion = "24.2.0"
 val thriftSerializerVersion = "5.0.7"
