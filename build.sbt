@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 
-val awsSdkVersion = "1.12.641"
+val awsSdkVersion = "1.12.771"
 val okHttpVersion = "4.12.0"
 val capiClientVersion = "31.0.2"
 val circeVersion = "0.14.5"
@@ -29,7 +29,6 @@ val root = Project("most-viewed-video-uploader", file("."))
   )
   .settings(basicSettings)
   .settings(
-    scalariformAutoformat := true,
     assembly / assemblyMergeStrategy   := {
       case PathList("com", "gu", "storypackage", _*) => MergeStrategy.first
       case "shared.thrift"                           => MergeStrategy.first
@@ -44,14 +43,11 @@ val root = Project("most-viewed-video-uploader", file("."))
     }
   )
 
-dependencyOverrides ++=  Seq(
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.14.2"
-)
-Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.getOrElse("SBT_JUNIT_OUTPUT", "junit"))
+Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.getOrElse("SBT_JUNIT_OUTPUT", "junit"), "-o")
 
 lazy val basicSettings = Seq(
   organization  := "com.gu",
   description   := "AWS Lambda for uploading most viewed video data to CAPI.",
-  scalaVersion  := "2.13.0",
+  scalaVersion  := "2.13.14",
   scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
 )
