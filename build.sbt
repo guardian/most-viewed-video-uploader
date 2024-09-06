@@ -3,10 +3,10 @@ import Keys._
 
 val awsSdkVersion = "1.12.771"
 val okHttpVersion = "4.12.0"
-val capiClientVersion = "31.0.2"
-val circeVersion = "0.14.5"
+val capiClientVersion = "31.0.3"
+val circeVersion = "0.14.9"
 val apacheThriftVersion = "0.20.0"
-val scroogeVersion = "22.12.0"
+val scroogeVersion = "24.2.0"
 val thriftSerializerVersion = "5.0.7"
 
 val root = Project("most-viewed-video-uploader", file("."))
@@ -23,7 +23,7 @@ val root = Project("most-viewed-video-uploader", file("."))
       "org.apache.thrift" % "libthrift" % apacheThriftVersion,
       "com.twitter" %% "scrooge-core" % scroogeVersion,
       "com.gu" %% "thrift-serializer" % thriftSerializerVersion,
-      "org.scalatest" %% "scalatest" % "3.2.15" % "test"
+      "org.scalatest" %% "scalatest" % "3.2.19" % "test"
     ),
     assemblyJarName := "most-viewed-video-uploader.jar"
   )
