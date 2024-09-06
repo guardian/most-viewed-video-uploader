@@ -23,7 +23,8 @@ val root = Project("most-viewed-video-uploader", file("."))
       "org.apache.thrift" % "libthrift" % apacheThriftVersion,
       "com.twitter" %% "scrooge-core" % scroogeVersion,
       "com.gu" %% "thrift-serializer" % thriftSerializerVersion,
-      "org.scalatest" %% "scalatest" % "3.2.15" % "test"
+      "org.scalatest" %% "scalatest" % "3.2.15" % "test",
+      "ch.qos.logback" % "logback-classic" % "1.5.7" % Runtime,
     ),
     assemblyJarName := "most-viewed-video-uploader.jar"
   )
