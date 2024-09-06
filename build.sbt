@@ -29,7 +29,6 @@ val root = Project("most-viewed-video-uploader", file("."))
   )
   .settings(basicSettings)
   .settings(
-    scalariformAutoformat := true,
     assembly / assemblyMergeStrategy   := {
       case PathList("com", "gu", "storypackage", _*) => MergeStrategy.first
       case "shared.thrift"                           => MergeStrategy.first
