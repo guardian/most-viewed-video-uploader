@@ -51,6 +51,6 @@ Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.get
 lazy val basicSettings = Seq(
   organization  := "com.gu",
   description   := "AWS Lambda for uploading most viewed video data to CAPI.",
-  scalaVersion  := "2.13.0",
+  scalaVersion  := "2.13.14",
   scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
 )
