@@ -13,7 +13,7 @@ val root = Project("most-viewed-video-uploader", file("."))
   .settings(
     scalacOptions += "-deprecation",
     libraryDependencies ++= Seq(
-      "com.amazonaws" % "aws-lambda-java-core" % "1.2.2",
+      "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
       "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
       "com.amazonaws" % "aws-java-sdk-kinesis" % awsSdkVersion,
       "com.squareup.okhttp3" % "okhttp" % okHttpVersion,
