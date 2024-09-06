@@ -24,7 +24,7 @@ val root = Project("most-viewed-video-uploader", file("."))
       "com.twitter" %% "scrooge-core" % scroogeVersion,
       "com.gu" %% "thrift-serializer" % thriftSerializerVersion,
       "org.scalatest" %% "scalatest" % "3.2.15" % "test",
-      "ch.qos.logback" % "logback-classic" % "1.5.7" % Runtime,
+      "org.slf4j" % "slf4j-nop" % "2.0.16" % Runtime,
     ),
     assemblyJarName := "most-viewed-video-uploader.jar"
   )
