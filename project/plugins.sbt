@@ -1,6 +1,6 @@
 resolvers += Resolver.bintrayIvyRepo("twittercsl", "sbt-plugins")
 
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "2.1.1")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "2.1.5")
 
 addSbtPlugin("com.twitter" % "scrooge-sbt-plugin" % "22.12.0")
 
