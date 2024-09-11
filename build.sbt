@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 
-val awsSdkVersion = "1.12.771"
+val awsSdkVersion = "1.12.772"
 val okHttpVersion = "4.12.0"
 val capiClientVersion = "31.0.2"
 val circeVersion = "0.14.5"
