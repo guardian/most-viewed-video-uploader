@@ -5,7 +5,7 @@ val awsSdkVersion = "1.12.771"
 val okHttpVersion = "4.12.0"
 val capiClientVersion = "31.0.2"
 val circeVersion = "0.14.5"
-val apacheThriftVersion = "0.20.0"
+val apacheThriftVersion = "0.24.0"
 val scroogeVersion = "22.12.0"
 val thriftSerializerVersion = "5.0.7"
 
