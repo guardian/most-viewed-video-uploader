@@ -7,7 +7,7 @@ val capiClientVersion = "31.0.2"
 val circeVersion = "0.14.5"
 val apacheThriftVersion = "0.20.0"
 val scroogeVersion = "22.12.0"
-val thriftSerializerVersion = "5.0.7"
+val thriftSerializerVersion = "5.0.8-PREVIEW.jmlibthrift-0240.2026-09-30T1141.b69d9973"
 
 val root = Project("most-viewed-video-uploader", file("."))
   .settings(
