@@ -8,12 +8,21 @@ val circeVersion = "0.14.16"
 val apacheThriftVersion = "0.24.0"
 val scroogeVersion = "22.12.0"
 val thriftSerializerVersion = "5.0.8"
+val jacksonVersion = "2.18.12"
 
 lazy val verifyDependencies = taskKey[Unit]("Reject unused HTTP 5 dependencies in the resolved graph")
 
 val root = Project("most-viewed-video-uploader", file("."))
   .settings(
     scalacOptions += "-deprecation",
+    // AWS SDK v1 still selects Jackson 2.17.2, whose release line has no fixes
+    // for the current advisories. Align its JSON and CBOR runtime modules.
+    dependencyOverrides ++= Seq(
+      "com.fasterxml.jackson.core" % "jackson-annotations" % jacksonVersion,
+      "com.fasterxml.jackson.core" % "jackson-core" % jacksonVersion,
+      "com.fasterxml.jackson.core" % "jackson-databind" % jacksonVersion,
+      "com.fasterxml.jackson.dataformat" % "jackson-dataformat-cbor" % jacksonVersion
+    ),
     // Thrift is used only for in-memory serialization. AWS SDK v1 still needs HTTP 4.
     excludeDependencies ++= Seq(
       ExclusionRule("org.apache.httpcomponents.client5", "httpclient5"),
