@@ -33,6 +33,11 @@ class ExtractMostViewedVideoTest extends AnyFlatSpec with Matchers {
     sections should be(Some(expected))
   }
 
+  it should "reject malformed JSON without producing records" in {
+    OphanStore.extractMostViewedVideoOverall("[{", Some("us")).isLeft should be(true)
+    OphanStore.extractMostViewedVideoBySection("{\"world\": [}", None).isLeft should be(true)
+  }
+
   def loadFileFromClasspath(path: String): String = {
     val uri = Paths.get(getClass.getClassLoader.getResource(path).toURI)
     val bytes = Files.readAllBytes(uri)
