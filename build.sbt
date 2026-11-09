@@ -9,9 +9,28 @@ val apacheThriftVersion = "0.24.0"
 val scroogeVersion = "22.12.0"
 val thriftSerializerVersion = "5.0.8"
 
+lazy val verifyDependencies = taskKey[Unit]("Reject unused HTTP 5 dependencies in the resolved graph")
+
 val root = Project("most-viewed-video-uploader", file("."))
   .settings(
     scalacOptions += "-deprecation",
+    // Thrift is used only for in-memory serialization. AWS SDK v1 still needs HTTP 4.
+    excludeDependencies ++= Seq(
+      ExclusionRule("org.apache.httpcomponents.client5", "httpclient5"),
+      ExclusionRule("org.apache.httpcomponents.core5", "httpcore5"),
+      ExclusionRule("org.apache.httpcomponents.core5", "httpcore5-h2")
+    ),
+    verifyDependencies := {
+      val forbidden = Set(
+        "org.apache.httpcomponents.client5" -> "httpclient5",
+        "org.apache.httpcomponents.core5" -> "httpcore5",
+        "org.apache.httpcomponents.core5" -> "httpcore5-h2"
+      )
+      val selected = update.value.configurations.flatMap(_.modules).filterNot(_.evicted).map(_.module)
+      val unexpected = selected.filter(m => forbidden.contains(m.organization -> m.name))
+      require(unexpected.isEmpty, s"Unused HTTP 5 dependencies resolved: ${unexpected.distinct.mkString(", ")}")
+    },
+    Test / test := (Test / test).dependsOn(verifyDependencies).value,
     libraryDependencies ++= Seq(
       "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
       "com.amazonaws" % "aws-java-sdk-s3" % awsSdkVersion,
