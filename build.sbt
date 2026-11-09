@@ -4,7 +4,7 @@ import Keys._
 val awsSdkVersion = "1.12.771"
 val okHttpVersion = "4.12.0"
 val capiClientVersion = "31.0.2"
-val circeVersion = "0.14.5"
+val circeVersion = "0.14.16"
 val apacheThriftVersion = "0.24.0"
 val scroogeVersion = "22.12.0"
 val thriftSerializerVersion = "5.0.8"
@@ -48,6 +48,6 @@ Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-u", sys.env.get
 lazy val basicSettings = Seq(
   organization  := "com.gu",
   description   := "AWS Lambda for uploading most viewed video data to CAPI.",
-  scalaVersion  := "2.13.14",
+  scalaVersion  := "2.13.18",
   scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
 )
