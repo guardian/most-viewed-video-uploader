@@ -8,7 +8,7 @@ val circeVersion = "0.14.16"
 val apacheThriftVersion = "0.24.0"
 val scroogeVersion = "22.12.0"
 val thriftSerializerVersion = "5.0.8"
-val jacksonVersion = "2.18.12"
+val jacksonVersion = "2.22.4"
 
 lazy val verifyDependencies = taskKey[Unit]("Reject unused HTTP 5 dependencies in the resolved graph")
 
