@@ -5,3 +5,4 @@ target/
 logs/
 junit/
 !.github
+!/cdk/.nvmrc
